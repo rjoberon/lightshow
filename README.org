@@ -1,0 +1,20 @@
+* Sources
+- rotary encoder library:
+  - CircuitPython: https://github.com/MikeTeachman/micropython-rotary
+  - MicroPython: https://learn.adafruit.com/rotary-encoder ←
+    *currently using this* in ~rotarytest.py~
+- skeleton code for ~rotary_irq_pico.py~:
+  https://forums.raspberrypi.com/viewtopic.php?t=303553
+- NeoPixel code: https://learn.adafruit.com/getting-started-with-raspberry-pi-pico-circuitpython/neopixel-leds
+- Pico tutorials:
+  - https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico
+  - https://www.blog.berrybase.de/blog/2021/02/08/erste-schritte-mit-dem-raspberry-pi-pico/
+- serial console: ~screen /dev/ttyACM1 115200~
+
+- Rotary Encoder COM 15140:
+  - https://www.sparkfun.com/products/15140
+  - https://github.com/sparkfun/Rotary_Encoder_Breakout-Illuminated/blob/main/Firmware/RGB_Rotary_Encoder/RGB_Rotary_Encoder.ino
+    - suggested connections:
+      - A = digital pin
+      - B = analog pin
+      - C = ground

@@ -1,8 +1,10 @@
 * Sources
 - rotary encoder library:
   - CircuitPython: https://github.com/MikeTeachman/micropython-rotary
-  - MicroPython: https://learn.adafruit.com/rotary-encoder ←
-    *currently using this* in ~rotarytest.py~
+    (interrupt-driven but for different hardware)
+  - MicroPython: https://learn.adafruit.com/rotary-encoder
+    (https://circuitpython.readthedocs.io/en/latest/shared-bindings/rotaryio/)
+    ← *currently using this* in [[file:rotarytest.py][rotarytest.py]]
 - skeleton code for ~rotary_irq_pico.py~:
   https://forums.raspberrypi.com/viewtopic.php?t=303553
 - NeoPixel code: https://learn.adafruit.com/getting-started-with-raspberry-pi-pico-circuitpython/neopixel-leds

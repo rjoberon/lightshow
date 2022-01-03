@@ -46,11 +46,12 @@ def ls_position(k, n, pixels, getcolor):
        1: [O       ]
        2: [ O      ]
        3: [  O     ]
+       4: [   O    ]
        ...
        n: [       O]
     """
-    pixels[:] = [OFF] * len(pixels[:])
-    pixels[k % n] = getcolor()
+    for i in range(n):
+        pixels[i] = getcolor() if i == (k - 1) % n else OFF
 
 
 def ls_unary(k, n, pixels, getcolor):
@@ -58,11 +59,12 @@ def ls_unary(k, n, pixels, getcolor):
        1: [O       ]
        2: [OO      ]
        3: [OOO     ]
+       4: [OOOO    ]
        ...
        n: [OOOOOOOO]
     """
-    pixels[:k % (n + 1)] = [getcolor()] * len(pixels[:k % (n + 1)])
-    pixels[k % (n + 1):] = [OFF] * len(pixels[k % (n + 1):])
+    for i in range(n):
+        pixels[i] = getcolor() if i < k % (n + 1) else OFF
 
 
 def ls_binary(k, n, pixels, getcolor):
@@ -75,10 +77,7 @@ def ls_binary(k, n, pixels, getcolor):
        n: [OOOOOOOO]
     """
     for i, j in enumerate("{0:{fill}8b}".format(k % 2**n, fill='0')):
-        if j == '1':
-            pixels[i] = getcolor()
-        else:
-            pixels[i] = OFF
+        pixels[i] = getcolor() if j == '1' else OFF
 
 
 def ls_gray(k, n, pixels, getcolor):
@@ -92,7 +91,4 @@ def ls_gray(k, n, pixels, getcolor):
     """
     kk = k % 2**n
     for i, j in enumerate("{0:{fill}8b}".format(kk ^ (kk >> 1), fill='0')):
-        if j == '1':
-            pixels[i] = getcolor()
-        else:
-            pixels[i] = OFF
+        pixels[i] = getcolor() if j == '1' else OFF

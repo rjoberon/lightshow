@@ -41,6 +41,6 @@ with neopixel.NeoPixel(gpio_neopixel, num_pixels, auto_write=False) as pixels:
         position = encoder.position
         if last_position is None or position != last_position:
             print(position)
-            demos.ls_binary(position, num_pixels, pixels, demos.get_rand_col)
+            demos.ls_binary(position, num_pixels, pixels, demos.col_const)
             pixels.show()
         last_position = position

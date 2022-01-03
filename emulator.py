@@ -86,6 +86,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Emulate a NeoPixel and a Rotary Encoder.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('function', type=str, help='function to test', nargs='*', default=["ls_binary"])
+    parser.add_argument('-c', '--color', choices=["col_const", "col_rand"], help='function for color', default="col_const")
     parser.add_argument('-s', '--size', type=int, metavar="NUM", help='number of LEDs', default=8)
     parser.add_argument('-v', '--version', action="version", version="%(prog)s " + version)
 
@@ -93,4 +94,4 @@ if __name__ == '__main__':
 
     npe = NeoPixelEmulator(args.size)
 
-    sys.exit(npe.run(getattr(demos, args.function[0]), demos.get_const_col))
+    sys.exit(npe.run(getattr(demos, args.function[0]), getattr(demos, args.color)))

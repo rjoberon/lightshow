@@ -9,12 +9,18 @@
 # Author: rja
 #
 # Changes:
+# 2022-01-03 (rja)
+# - added command line parsing
 # 2021-12-31 (rja)
 # - initial version
 
 import sys
 import sdl2.ext
 import demos
+import argparse
+from inspect import getmembers, isfunction
+
+version = "0.0.2"
 
 
 class NeoPixelEmulator():
@@ -77,5 +83,14 @@ class NeoPixelEmulator():
 
 
 if __name__ == '__main__':
-    npe = NeoPixelEmulator(8)
-    sys.exit(npe.run(demos.ls_binary, demos.get_const_col))
+
+    parser = argparse.ArgumentParser(description='Emulate a NeoPixel and a Rotary Encoder.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('function', type=str, help='function to test', nargs='*', default=["ls_binary"])
+    parser.add_argument('-s', '--size', type=int, metavar="NUM", help='number of LEDs', default=8)
+    parser.add_argument('-v', '--version', action="version", version="%(prog)s " + version)
+
+    args = parser.parse_args()
+
+    npe = NeoPixelEmulator(args.size)
+
+    sys.exit(npe.run(getattr(demos, args.function[0]), demos.get_const_col))

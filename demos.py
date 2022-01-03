@@ -11,11 +11,11 @@
 # Changes:
 # 2022-01-03 (rja)
 # - repaired scalar assignment for list slices
-# - added ls_gray
+# - added ls_gray, ls_pulse, ls_random
 # 2022-01-02 (rja)
 # - initial version
 
-from random import randint
+from random import randint, getrandbits
 
 # color configuration
 hv = 255
@@ -33,11 +33,11 @@ colors = [
 OFF = (0, 0, 0)
 
 
-def get_rand_col():
+def col_rand():
     return colors[randint(0, len(colors)-1)]
 
 
-def get_const_col():
+def col_const():
     return colors[0] # red
 
 
@@ -91,4 +91,27 @@ def ls_gray(k, n, pixels, getcolor):
     """
     kk = k % 2**n
     for i, j in enumerate("{0:{fill}8b}".format(kk ^ (kk >> 1), fill='0')):
+        pixels[i] = getcolor() if j == '1' else OFF
+
+
+def ls_pulse(k, n, pixels, getcolor):
+    """0: [        ]
+       1: [   OO   ]
+       2: [  OOOO  ]
+       ...
+       4: [OOOOOOOO]
+       ...
+       6: [  OOOO  ]
+       7: [   OO   ]
+       8: [        ]
+       9: [   OO   ]
+       ...
+    """
+    off = abs(n//2 - ((k - 1) % n))
+    for i in range(n):
+        pixels[i] = getcolor() if i >= off and i < n - off else OFF
+
+
+def ls_random(k, n, pixels, getcolor):
+    for i, j in enumerate("{0:{fill}8b}".format(getrandbits(n), fill='0')):
         pixels[i] = getcolor() if j == '1' else OFF

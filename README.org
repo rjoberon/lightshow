@@ -13,10 +13,66 @@
   - https://www.blog.berrybase.de/blog/2021/02/08/erste-schritte-mit-dem-raspberry-pi-pico/
 - serial console: ~screen /dev/ttyACM1 115200~
 
-- Rotary Encoder COM 15140:
-  - https://www.sparkfun.com/products/15140
-  - https://github.com/sparkfun/Rotary_Encoder_Breakout-Illuminated/blob/main/Firmware/RGB_Rotary_Encoder/RGB_Rotary_Encoder.ino
-    - suggested connections:
-      - A = digital pin
-      - B = analog pin
-      - C = ground
+* CircuitPython
+** Switch
+- [[https://www.elektronik-kompendium.de/sites/raspberry-pi/2006051.htm][resistors required]]!?
+- [[https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/6][MicroPython example]]
+
+** LED
+- https://learn.adafruit.com/circuitpython-digital-inputs-and-outputs/digital-outputs
+- MicroPython: [[https://www.blog.berrybase.de/blog/2021/02/08/erste-schritte-mit-dem-raspberry-pi-pico/][ex. 1]], [[https://draeger-it.blog/raspberry-pi-pico-2-leds-steuern/][ex. 2]], [[https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/6][ex. 3 (incl. switch)]], [[https://qbalsdon.github.io/circuitpython/rotary-encoder/python/led/2021/02/27/rgb-rotary-encoder.html][ex. 4 (incl. PWM)]], [[http://www.pibits.net/code/raspberry-pi-pico-and-rgb-led-example-in-micropython.php][ex. 5]]
+
+#+begin_src python
+import board
+import digitalio
+import time
+
+led = digitalio.DigitalInOut(board.A1)
+led.direction = digitalio.Direction.OUTPUT
+
+while True:
+    led.value = True
+    time.sleep(0.5)
+    led.value = False
+    time.sleep(0.5)
+#+end_src
+
+* Rotary Encoder
+** COM 15140 (2 color)
+- https://www.sparkfun.com/products/15140
+- [[https://github.com/sparkfun/Rotary_Encoder_Breakout-Illuminated/blob/main/Firmware/RG_Rotary_Encoder/RG_Rotary_Encoder.ino][example code]]
+
+** COM 15141 (3 color)
+- https://www.sparkfun.com/products/15141
+- [[https://cdn.sparkfun.com/assets/4/e/e/b/f/DS-15141-Rotary_Encoder_-_Illuminated__RGB_.pdf][specification]], [[https://cdn.sparkfun.com/assets/e/1/a/4/7/MD-15141-_Rotary_Encoder_-_Illuminated__RGB_.pdf][datasheet]], [[https://github.com/sparkfun/Rotary_Encoder_Breakout-Illuminated/blob/main/Firmware/RGB_Rotary_Encoder/RGB_Rotary_Encoder.ino][example code]]
+- [[https://qbalsdon.github.io/circuitpython/rotary-encoder/python/led/2021/02/27/rgb-rotary-encoder.html][code examples]] (lacking resistors!)
+
+| pin | item                   | note |
+|-----+------------------------+------|
+|   1 | LED red                |      |
+|   2 | LED green              |      |
+|   3 | switch                 |      |
+|   4 | LED blue               |      |
+|   5 | 3.3V                   |      |
+|   A | rotary encoder         |      |
+|   B | rotary encoder         |      |
+|   C | GND for rotary encoder |      |
+
+switch and LEDs have a common anode!
+
+1 o--|<|--+
+2 o--/ ---|
+3 o--|<|--|
+4 0--|<|--|
+5 0--|<|--+
+
+* Wiring
+** grey box
+- rotary encoder COM 15141:
+  - LED: GP19, GP20, GP21 +common anode @3.3V
+  - switch: + 3.3V
+  - rotary encoder: GP14, GP15, GND
+- black switch:
+- red switch:
+
+** black box

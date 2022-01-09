@@ -7,7 +7,6 @@
 # Usage: Copy rotaryledtest.py to /media/rja/CIRCUITPY/code.py
 #
 # see output on serial console (screen /dev/ttyACM1 115200)
-# Source: https://learn.adafruit.com/rotary-encoder/circuitpython
 #
 # Author: rja
 #
@@ -15,16 +14,16 @@
 # 2022-01-09 (rja)
 # - initial version
 #
-# | pin RE | function                  | pin Pico       |
-# |--------+---------------------------+----------------|
-# |      A | rotary encoder            | D9  (GP6)      |
-# |      B | rotary encoder            | D10 (GP7)      |
-# |      C | rotary encoder GND        | GND (e.g., D8) |
-# |      1 | LED red                   | GP21           |
-# |      2 | LED green                 | GP20           |
-# |      3 | switch                    |                |
-# |      4 | LED blue                  | GP19        |
-# |      5 | common anode LED & switch | 3.3V           |
+# | pin encoder | function                  | pin Pico |
+# |-------------+---------------------------+----------|
+# |           A | rotary encoder            | GP14     |
+# |           B | rotary encoder            | GP15     |
+# |           C | rotary encoder GND        | GND      |
+# |           1 | LED red                   | GP21     |
+# |           2 | LED green                 | GP20     |
+# |           3 | switch                    | GP22     |
+# |           4 | LED blue                  | GP19     |
+# |           5 | common anode LED & switch | 3.3V     |
 
 import rotaryio
 import board
@@ -69,7 +68,7 @@ def get_step(value, maxvalue, steps):
 
 # functions mapping encoder positions to LED colors
 
-# used by rgbcmyk
+# used by ls_rgbcmyk
 colors = [
     (0, 0, 0), # off
     (1, 0, 0), # red
@@ -95,12 +94,22 @@ def ls_saturation(pos, color=0, steps=9):
 
 
 def ls_random(pos, granularity=4):
-    """Set a random color."""
+    """Random color."""
     return (
         random.randint(1, granularity) * 256//granularity - 1,
         random.randint(1, granularity) * 256//granularity - 1,
         random.randint(1, granularity) * 256//granularity - 1
     )
+
+
+def ls_binaryrandom(pos):
+    """Random color alternating with no color"""
+    return ls_random(pos) if pos % 2 == 0 else (0, 0, 0)
+
+
+def ls_binaryfixed(pos, color=(255, 0, 0)):
+    """Fixed color alternating with no color"""
+    return color if pos % 2 == 0 else (0, 0, 0)
 
 
 def ls_hue(pos, steps=33):
@@ -110,12 +119,12 @@ def ls_hue(pos, steps=33):
 
 
 # functions to loop through
-
-
 funcs = [
     ls_rgbcmyk,
     ls_saturation,
     ls_random,
+    ls_binaryrandom,
+    ls_binaryfixed,
     ls_hue
 ]
 

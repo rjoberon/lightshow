@@ -30,26 +30,32 @@ import rotaryio
 import board
 import pwmio
 import random
+import digitalio
 import adafruit_fancyled.adafruit_fancyled as fancy
+from adafruit_debouncer import Debouncer
+
 
 # configure wiring
+# rotary encoder
 encoder = rotaryio.IncrementalEncoder(board.GP15, board.GP14)
-OFF = 2**16 - 1
-ON  = 0
+# switch
+pin = digitalio.DigitalInOut(board.GP22)
+pin.direction = digitalio.Direction.INPUT
+pin.pull = digitalio.Pull.DOWN
+switch = Debouncer(pin)
+# LED
 rgb = (
-    pwmio.PWMOut(board.GP21, frequency=5000, duty_cycle=OFF),
-    pwmio.PWMOut(board.GP20, frequency=5000, duty_cycle=OFF),
-    pwmio.PWMOut(board.GP19, frequency=5000, duty_cycle=OFF)
+    pwmio.PWMOut(board.GP21, frequency=5000, duty_cycle=2**16 - 1),
+    pwmio.PWMOut(board.GP20, frequency=5000, duty_cycle=2**16 - 1),
+    pwmio.PWMOut(board.GP19, frequency=5000, duty_cycle=2**16 - 1)
 )
-RED = 0
-GREEN = 1
-BLUE = 2
 
 # helper functions
 
 
 def set_color(led, rgb):
-    """Set LED to rgb using some checks. colors in range 0..255"""
+    """Set LED to rgb using some checks.
+       Input colors in range 0..2**8, output colors in range 0..2**16"""
     for i, c in enumerate(rgb):
         val = (255 - min(255, abs(c))) * (2**8 + 1)
         print("  ", c, "→", val)
@@ -64,7 +70,7 @@ def get_step(value, maxvalue, steps):
 # functions mapping encoder positions to LED colors
 
 # used by rgbcmyk
-states = [
+colors = [
     (0, 0, 0), # off
     (1, 0, 0), # red
     (0, 1, 0), # green
@@ -78,10 +84,10 @@ states = [
 
 def ls_rgbcmyk(pos, brightness=255):
     """Loop through red, green, blue, yellow, magenta, cyan, white"""
-    return [c*brightness for c in states[pos % len(states)]]
+    return [c*brightness for c in colors[pos % len(colors)]]
 
 
-def ls_saturation(pos, color=RED, steps=9):
+def ls_saturation(pos, color=0, steps=9):
     """Loop through saturation of a random color"""
     values = [0, 0, 0]
     values[color] = get_step(pos, 255, steps)
@@ -106,19 +112,26 @@ def ls_hue(pos, steps=33):
 # functions to loop through
 
 
-funcs = [ls_rgbcmyk]
-funcs = [ls_saturation]
-funcs = [ls_random]
-funcs = [ls_hue]
+funcs = [
+    ls_rgbcmyk,
+    ls_saturation,
+    ls_random,
+    ls_hue
+]
 
 last_position = None
 funci = 0
+func = funcs[funci]
 
 while True:
     position = encoder.position
+    switch.update()
     if last_position is None or position != last_position:
-        func = funcs[funci]
         col = func(position)
         print(position, col)
         set_color(rgb, col)
+    if switch.rose:
+        func = funcs[funci]
+        print("using", func)
+        funci = (funci + 1) % len(funcs)
     last_position = position

@@ -23,7 +23,7 @@
 import rotaryio
 import board
 
-encoder = rotaryio.IncrementalEncoder(board.GP6, board.GP7)
+encoder = rotaryio.IncrementalEncoder(board.GP14, board.GP15)
 last_position = None
 
 while True:

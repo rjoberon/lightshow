@@ -16,9 +16,13 @@
 * CircuitPython
 ** Switch
 - [[https://www.elektronik-kompendium.de/sites/raspberry-pi/2006051.htm][resistors required]]!?
+- https://learn.adafruit.com/debouncer-library-python-circuitpython-buttons-sensors/
 - [[https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/6][MicroPython example]]
 
-** LED
+** Color
+- https://learn.adafruit.com/fancyled-library-for-circuitpython/
+** LED (pwmio)
+** LED (digialio)
 - https://learn.adafruit.com/circuitpython-digital-inputs-and-outputs/digital-outputs
 - MicroPython: [[https://www.blog.berrybase.de/blog/2021/02/08/erste-schritte-mit-dem-raspberry-pi-pico/][ex. 1]], [[https://draeger-it.blog/raspberry-pi-pico-2-leds-steuern/][ex. 2]], [[https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/6][ex. 3 (incl. switch)]], [[https://qbalsdon.github.io/circuitpython/rotary-encoder/python/led/2021/02/27/rgb-rotary-encoder.html][ex. 4 (incl. PWM)]], [[http://www.pibits.net/code/raspberry-pi-pico-and-rgb-led-example-in-micropython.php][ex. 5]]
 

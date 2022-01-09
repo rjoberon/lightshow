@@ -30,7 +30,7 @@ import rotaryio
 import board
 import pwmio
 import random
-#import adafruit_fancyled.adafruit_fancyled as fancy
+import adafruit_fancyled.adafruit_fancyled as fancy
 
 # configure wiring
 encoder = rotaryio.IncrementalEncoder(board.GP15, board.GP14)
@@ -45,6 +45,8 @@ RED = 0
 GREEN = 1
 BLUE = 2
 
+# helper functions
+
 
 def set_color(led, rgb):
     """Set LED to rgb using some checks. colors in range 0..255"""
@@ -52,6 +54,11 @@ def set_color(led, rgb):
         val = (255 - min(255, abs(c))) * (2**8 + 1)
         print("  ", c, "→", val)
         led[i].duty_cycle = val
+
+
+def get_step(value, maxvalue, steps):
+    """Split 0...maxvalue into steps-1 parts and return boundary"""
+    return int((value % steps) * (maxvalue/(steps - 1)))
 
 
 # functions mapping encoder positions to LED colors
@@ -77,18 +84,32 @@ def ls_rgbcmyk(pos, brightness=255):
 def ls_saturation(pos, color=RED, steps=9):
     """Loop through saturation of a random color"""
     values = [0, 0, 0]
-    values[color] = int((pos % steps) * (255/(steps - 1)))
+    values[color] = get_step(pos, 255, steps)
     return values
 
 
-def ls_hue(pos):
-    """Rotate through hue"""
-    pass
+def ls_random(pos, granularity=4):
+    """Set a random color."""
+    return (
+        random.randint(1, granularity) * 256//granularity - 1,
+        random.randint(1, granularity) * 256//granularity - 1,
+        random.randint(1, granularity) * 256//granularity - 1
+    )
+
+
+def ls_hue(pos, steps=33):
+    """Loop through hue"""
+    hue = get_step(pos, 255, steps)
+    return [int(c*255) for c in fancy.CRGB(fancy.CHSV(hue))]
 
 
 # functions to loop through
+
+
 funcs = [ls_rgbcmyk]
 funcs = [ls_saturation]
+funcs = [ls_random]
+funcs = [ls_hue]
 
 last_position = None
 funci = 0

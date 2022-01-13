@@ -1,2 +1,6 @@
+* Raspberry Pi Pico
+- act as a [[file:hid][HID]]  (Human Interface Device)
+- a [[file:lightshow][lightshow]] with LEDs
+
 * power
 - [[https://forums.raspberrypi.com/viewtopic.php?t=300676][via NiMH battery (4x)]]

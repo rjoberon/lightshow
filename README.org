@@ -1,0 +1,2 @@
+* power
+- [[https://forums.raspberrypi.com/viewtopic.php?t=300676][via NiMH battery (4x)]]

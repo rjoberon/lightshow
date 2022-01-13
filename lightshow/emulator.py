@@ -57,6 +57,7 @@ class NeoPixelEmulator():
     def run(self, func, getcolor):
         running = True
         position = 0
+        # FIXME: use interrupts
         while running:
             events = sdl2.ext.get_events()
             for event in events:

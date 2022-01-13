@@ -112,6 +112,26 @@ def ls_pulse(k, n, pixels, getcolor):
         pixels[i] = getcolor() if i >= off and i < n - off else OFF
 
 
+# TODO
+def ls_band(k, n, pixels, getcolor):
+    """0: [        ]  1 4 0
+       1: [   OO   ]  2 3 1
+       2: [  O  O  ]  3 2 2
+       ...            4 1 3
+       4: [O      O]  5 2 4
+       ...            6 3 5
+       6: [  O  O  ]  7 4 6
+       7: [   OO   ]  8 3 7
+       8: [        ]
+       9: [   OO   ]
+       ...
+    """
+    off = abs(n//2 - ((k - 1) % (n - 1)))
+    print(k, off)
+    for i in range(n):
+        pixels[i] = getcolor() if i == off or i == n - off else OFF
+
+
 def ls_random(k, n, pixels, getcolor):
     for i, j in enumerate("{0:{fill}8b}".format(getrandbits(n), fill='0')):
         pixels[i] = getcolor() if j == '1' else OFF

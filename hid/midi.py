@@ -8,9 +8,13 @@
 #
 # Author: rja
 #
-# Relevant resources:
+# Useful resources:
 # - https://blog.4dcu.be/diy/2021/05/20/MIDIpad.html
-#
+# - https://in-thread.sonic-pi.net/t/using-pitch-change-and-control-change-from-midi-controller-roli-lightblock/435/7
+# - https://sites.uci.edu/camp2014/2014/04/30/managing-midi-pitchbend-messages/
+# - https://docs.circuitpython.org/projects/midi/en/latest/api.html
+# - https://blog.4dcu.be/diy/2021/05/20/MIDIpad.html
+
 # TODO:
 # - use button debouncer? see multi.py or https://github.com/CrazyRobMiles/PICO-MIDI-Crackers-Controller/blob/main/code/CrackersController.py
 #

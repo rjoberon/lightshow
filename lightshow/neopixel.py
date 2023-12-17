@@ -18,6 +18,8 @@
 # Author: rja
 #
 # Changes:
+# 2023-12-17 (rja)
+# - changed DIN from GP20 to GP0 (1) and added rainbow code :-)
 # 2021-12-26 (rja)
 # - initial version
 
@@ -28,18 +30,24 @@ NeoPixel example for Pico. Turns the NeoPixels red.
 REQUIRED HARDWARE:
 * RGB NeoPixel LEDs connected to pin GP0.
 """
+import time
 import board
 import neopixel
-import time
+from rainbowio import colorwheel
 
 # Update this to match the number of NeoPixel LEDs connected to your board.
 num_pixels = 8
 
-pixels = neopixel.NeoPixel(board.GP20, num_pixels)
+pixels = neopixel.NeoPixel(board.GP0, num_pixels, auto_write=False)
 pixels.brightness = 0.5
 
+def rainbow(speed):
+    for j in range(255):
+        for i in range(num_pixels):
+            pixel_index = (i * 256 // num_pixels) + j
+            pixels[i] = colorwheel(pixel_index & 255)
+        pixels.show()
+        time.sleep(speed)
+
 while True:
-    # pixels.fill((1, 1, 1))
-    for i in range(8):
-        pixels[i] = (0, 0, 0)
-    time.sleep(3)
+    rainbow(0)

@@ -1,3 +1,10 @@
+* Blinkedingsi
+- https://www.az-delivery.de/blogs/azdelivery-blog-fur-arduino-und-raspberry-pi/nachtlicht-mit-raspberry-pi-pico-und-ws2812b-rgb-led
+- https://www.elektronik-kompendium.de/sites/raspberry-pi/2703111.htm
+
+* Neopixel
+[[file:neopixel.py]]
+
 * Sources
 - rotary encoder library:
   - CircuitPython: https://github.com/MikeTeachman/micropython-rotary
@@ -62,6 +69,13 @@ while True:
 |   B | rotary encoder         |      |
 |   C | GND for rotary encoder |      |
 
+[[https://github.com/sparkfun/Rotary_Encoder_Breakout-Illuminated/blob/main/Firmware/RGB_Rotary_Encoder/RGB_Rotary_Encoder.ino][SparkFun source code]] says:
+- "you can further improve [debounce] performance by placing *0.1uF
+  capacitors* between A and ground, and B and ground."
+- "Note that because this is a common anode device, the pushbutton
+  requires an *external 1K-10K pullDOWN resistor* to operate."
+
+
 switch and LEDs have a common anode!
 
 1 o--|<|--+
@@ -71,6 +85,8 @@ switch and LEDs have a common anode!
 5 0--|<|--+
 
 * Wiring
+** Blinkedingsi
+
 ** grey box
 - rotary encoder COM 15141:
   - LED: GP19, GP20, GP21 +common anode @3.3V

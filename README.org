@@ -1,6 +1,15 @@
 * Raspberry Pi Pico
 - act as a [[file:hid][HID]]  (Human Interface Device)
 - a [[file:lightshow][lightshow]] with LEDs
+- https://pico.pinout.xyz/
+
+* Setup / Preparation for CircuitPython
+- Download the .uf2 file for [[https://github.com/adafruit/circuitpython][CircuitPython]] from
+  https://circuitpython.org/downloads and place it onto the Pico (when
+  in bootloader mode, i.e., started by pressing button).
+- optional: download [[https://circuitpython.org/libraries][library bundle]] and extract required .mpy files
+  and place them into lib folder
+- copy own code into code.py
 
 * power
 - [[https://forums.raspberrypi.com/viewtopic.php?t=300676][via NiMH battery (4x)]]

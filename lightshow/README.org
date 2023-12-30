@@ -1,11 +1,9 @@
 * Blinkedingsi
-- https://www.az-delivery.de/blogs/azdelivery-blog-fur-arduino-und-raspberry-pi/nachtlicht-mit-raspberry-pi-pico-und-ws2812b-rgb-led
-- https://www.elektronik-kompendium.de/sites/raspberry-pi/2703111.htm
-
-* Neopixel
-[[file:neopixel.py]]
+- [[file:neopixel.py][neopixel.py]] :: NeoPixel mit Rotary Encoder steuern
 
 * Sources
+- [[https://www.az-delivery.de/blogs/azdelivery-blog-fur-arduino-und-raspberry-pi/nachtlicht-mit-raspberry-pi-pico-und-ws2812b-rgb-led][hand-made neopixel code]]
+- [[https://www.elektronik-kompendium.de/sites/raspberry-pi/2703111.htm][Lauflicht]]
 - rotary encoder library:
   - CircuitPython: https://github.com/MikeTeachman/micropython-rotary
     (interrupt-driven but for different hardware)
@@ -86,7 +84,7 @@ switch and LEDs have a common anode!
 
 * Wiring
 ** Blinkedingsi
-
+- see [[file:neopixel.py][neopixel.py]]
 ** grey box
 - rotary encoder COM 15141:
   - LED: GP19, GP20, GP21 +common anode @3.3V

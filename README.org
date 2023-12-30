@@ -2,6 +2,7 @@
 - act as a [[file:hid/README.org][HID]]  (Human Interface Device)
 - a [[file:lightshow/README.org][lightshow]] with LEDs
 - https://pico.pinout.xyz/
+- debugging on serial console: ~screen /dev/ttyACM1 115200~
 
 * Setup / Preparation for CircuitPython
 - Download the .uf2 file for [[https://github.com/adafruit/circuitpython][CircuitPython]] from

@@ -1,6 +1,6 @@
 * Raspberry Pi Pico
-- act as a [[file:hid][HID]]  (Human Interface Device)
-- a [[file:lightshow][lightshow]] with LEDs
+- act as a [[file:hid/README.org][HID]]  (Human Interface Device)
+- a [[file:lightshow/README.org][lightshow]] with LEDs
 - https://pico.pinout.xyz/
 
 * Setup / Preparation for CircuitPython

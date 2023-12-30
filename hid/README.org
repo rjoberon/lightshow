@@ -1,3 +1,7 @@
+- [[file:midi.py][midi.py]] :: Pico as MIDI input device
+- [[file:multi.py][multi.py]] :: RGB LED rotary encoder lightshow
+- [[file:zoom.py][zoom.py]] :: Pico as Zoom helper: (un)mute + raise/lower hand
+
 * Debugging on serial console
 
 ~screen /dev/ttyACM1 115200~

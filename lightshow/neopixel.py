@@ -29,31 +29,29 @@
 # Author: rja
 #
 # Changes:
+# 2024-01-03 (rja)
+# - added selection of different effects using the rotary encoder
 # 2023-12-30 (rja)
 # - added rotary encoder (which moves the rainbow)
 # 2023-12-17 (rja)
 # - changed DIN from GP20 to GP0 (1) and added rainbow code :-)
 # 2021-12-26 (rja)
 # - initial version
+#
+# Tasks:
+# - consider using interrupt-based handling of rotary encoder, for example,
+#   https://pypi.org/project/micropython-rotary-encoder/
 
-
-"""
-NeoPixel example for Pico. Turns the NeoPixels red.
-
-REQUIRED HARDWARE:
-* RGB NeoPixel LEDs connected to pin GP0.
-"""
 import time
 import board
 import neopixel
 import rotaryio
-from rainbowio import colorwheel
+import demos
+
 
 # Update this to match the number of NeoPixel LEDs connected to your board.
 num_pixels = 8
-
-pixels = neopixel.NeoPixel(board.GP0, num_pixels, auto_write=False)
-pixels.brightness = 0.5
+gpio_neopixel = board.GP0
 
 # configure wiring
 # rotary encoder
@@ -71,28 +69,38 @@ encoder = rotaryio.IncrementalEncoder(board.GP3, board.GP4)
 #)
 
 
-def rainbow(speed):
-    """Shift rainbow colors through LEDs."""
-    for j in range(255):
-        set_rainbow(j)
-        time.sleep(speed)
-
-def set_rainbow(j):
-    """Show one rainbow position ."""
-    for i in range(num_pixels):
-        pixel_index = (i * 256 // num_pixels) + j
-        pixels[i] = colorwheel(pixel_index & 255)
-    pixels.show()
+effects = [
+    demos.ls_position,
+    demos.ls_unary,
+    demos.ls_binary,
+    demos.ls_gray,
+    demos.ls_pulse,
+    demos.ls_band,
+    demos.ls_random
+]
 
 
-last_position = None
+with neopixel.NeoPixel(gpio_neopixel, num_pixels, auto_write=False) as pixels:
+    pixels.brightness = 0.25
 
-while True:
-    # handle rotary encoder
-    position = encoder.position
-    if last_position is None or position != last_position:
-        set_rainbow(position)
-    last_position = position
+    k = 0                           # running variable for effect
+    last_position = None            # last position of rotary encoder
 
-    # wait
-    time.sleep(0.15)
+    while True:
+        # handle rotary encoder
+        position = encoder.position
+        if last_position is None or position != last_position:
+            print(position)         # position changed → change effect
+            effect = effects[position % len(effects)]
+            k = 0
+        last_position = position
+
+        # handle effect
+        effect(k, num_pixels, pixels, demos.col_rand)
+        pixels.show()
+        if k > 255:
+            k = 0
+        else:
+            k += 1
+
+        time.sleep(0.15)

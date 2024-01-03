@@ -6,9 +6,17 @@
 #
 # Usage: import as a module
 #
+# Arguments:
+# - k: arbitrary integer (= rotary encoder position)
+# - n: number of pixels (LEDs)
+# - pixels: NeoPixel
+# - getcolor: color function
+#
 # Author: rja
 #
 # Changes:
+# 2024-01-03 (rja)
+# - added ls_rainbow
 # 2022-01-03 (rja)
 # - repaired scalar assignment for list slices
 # - added ls_gray, ls_pulse, ls_random
@@ -16,6 +24,7 @@
 # - initial version
 
 from random import randint, getrandbits
+from rainbowio import colorwheel
 
 # color configuration
 hv = 255
@@ -135,3 +144,11 @@ def ls_band(k, n, pixels, getcolor):
 def ls_random(k, n, pixels, getcolor):
     for i, j in enumerate("{0:{fill}8b}".format(getrandbits(n), fill='0')):
         pixels[i] = getcolor() if j == '1' else OFF
+
+
+def ls_rainbow(k, n, pixels, getcolor):
+    """A rainbow starting at k."""
+    # FIXME: document/explain constants
+    for i in range(n):
+        pixel_index = (i * 256 // n) + k
+        pixels[i] = colorwheel(pixel_index & 255)

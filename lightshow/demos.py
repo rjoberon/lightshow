@@ -15,6 +15,9 @@
 # Author: rja
 #
 # Changes:
+# 2024-01-04 (rja)
+# - added ls_sine
+# - added workaround for missing rainbowio library
 # 2024-01-03 (rja)
 # - added ls_rainbow
 # 2022-01-03 (rja)
@@ -24,7 +27,15 @@
 # - initial version
 
 from random import randint, getrandbits
-from rainbowio import colorwheel
+from math import sin
+
+try:
+    from rainbowio import colorwheel
+except ImportError:
+    def colorwheel(c):
+        print("WARNING: rainbowio not found, using constant color")
+        return (128, 0, 0)
+
 
 # color configuration
 hv = 255
@@ -139,6 +150,14 @@ def ls_band(k, n, pixels, getcolor):
     # print(k, off)
     for i in range(n):
         pixels[i] = getcolor() if i == off or i == n - off else OFF
+
+
+def ls_sine(k, n, pixels, getcolor):
+    """Sine wave"""
+    # The constant 20 fixes the speed/resolution.
+    on = int((1 + sin(((2*3.1415926)/40) * (k % 40)))/2 * n)
+    for i in range(n):
+        pixels[i] = getcolor() if i == on else OFF
 
 
 def ls_random(k, n, pixels, getcolor):

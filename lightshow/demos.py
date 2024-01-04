@@ -154,7 +154,7 @@ def ls_band(k, n, pixels, getcolor):
 
 def ls_sine(k, n, pixels, getcolor):
     """Sine wave"""
-    # The constant 20 fixes the speed/resolution.
+    # The constant 40 fixes the speed/resolution.
     on = int((1 + sin(((2*3.1415926)/40) * (k % 40)))/2 * n)
     for i in range(n):
         pixels[i] = getcolor() if i == on else OFF

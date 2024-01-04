@@ -9,6 +9,8 @@
 # Author: rja
 #
 # Changes:
+# 2024-01-04 (rja)
+# - added automatic stepping with configurable delay
 # 2022-01-03 (rja)
 # - added command line parsing
 # 2021-12-31 (rja)
@@ -18,9 +20,9 @@ import sys
 import sdl2.ext
 import demos
 import argparse
-from inspect import getmembers, isfunction
+import time
 
-version = "0.0.2"
+version = "0.0.3"
 
 
 class NeoPixelEmulator():
@@ -54,7 +56,7 @@ class NeoPixelEmulator():
     def __repr__(self):
         return str(self.data)
 
-    def run(self, func, getcolor):
+    def run(self, func, getcolor, step=False, delay=0.05):
         running = True
         position = 0
         # FIXME: use interrupts
@@ -74,6 +76,11 @@ class NeoPixelEmulator():
                     elif event.key.keysym.sym == sdl2.SDLK_ESCAPE:
                         running = False
                         break
+            if not step:
+                # step automatically through all steps
+                position += 1
+                time.sleep(delay)
+                self.set(position, func, getcolor)
             self.window.refresh()
         sdl2.ext.quit()
         return 0
@@ -89,10 +96,12 @@ if __name__ == '__main__':
     parser.add_argument('function', type=str, help='function to test', nargs='*', default=["ls_binary"])
     parser.add_argument('-c', '--color', choices=["col_const", "col_rand"], help='function for color', default="col_const")
     parser.add_argument('-s', '--size', type=int, metavar="NUM", help='number of LEDs', default=8)
+    parser.add_argument('-d', '--delay', type=float, metavar="D", help='time delay', default=0.05)
+    parser.add_argument('--step', action="store_true", help='step through')
     parser.add_argument('-v', '--version', action="version", version="%(prog)s " + version)
 
     args = parser.parse_args()
 
     npe = NeoPixelEmulator(args.size)
 
-    sys.exit(npe.run(getattr(demos, args.function[0]), getattr(demos, args.color)))
+    sys.exit(npe.run(getattr(demos, args.function[0]), getattr(demos, args.color), args.step, args.delay))

@@ -32,8 +32,9 @@ from math import sin
 try:
     from rainbowio import colorwheel
 except ImportError:
+    print("WARNING: rainbowio not found, using constant color")
+
     def colorwheel(c):
-        print("WARNING: rainbowio not found, using constant color")
         return (128, 0, 0)
 
 

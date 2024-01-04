@@ -1,5 +1,8 @@
 * Blinkedingsi
 - [[file:neopixel.py][neopixel.py]] :: NeoPixel mit Rotary Encoder steuern
+- [[file:demos.py][demos.py]] :: effects for LED pixel strips
+- [[file:emulator.py][emulator.py]] :: emulator to test the effects from [[functions that implement ][demos.py]] without an
+  LED strip (using SDL instead)
 
 * Sources
 - [[https://www.az-delivery.de/blogs/azdelivery-blog-fur-arduino-und-raspberry-pi/nachtlicht-mit-raspberry-pi-pico-und-ws2812b-rgb-led][hand-made neopixel code]]

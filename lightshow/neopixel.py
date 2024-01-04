@@ -76,7 +76,8 @@ effects = [
     demos.ls_gray,
     demos.ls_pulse,
     demos.ls_band,
-    demos.ls_random
+    demos.ls_random,
+    demos.ls_rainbow
 ]
 
 
@@ -96,11 +97,11 @@ with neopixel.NeoPixel(gpio_neopixel, num_pixels, auto_write=False) as pixels:
         last_position = position
 
         # handle effect
-        effect(k, num_pixels, pixels, demos.col_rand)
+        effect(k, num_pixels, pixels, demos.col_const)
         pixels.show()
         if k > 255:
             k = 0
         else:
             k += 1
 
-        time.sleep(0.15)
+        time.sleep(0.05)

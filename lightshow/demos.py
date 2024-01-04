@@ -136,7 +136,7 @@ def ls_band(k, n, pixels, getcolor):
        ...
     """
     off = abs(n//2 - ((k - 1) % (n - 1)))
-    print(k, off)
+    # print(k, off)
     for i in range(n):
         pixels[i] = getcolor() if i == off or i == n - off else OFF
 

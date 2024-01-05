@@ -76,6 +76,7 @@ effects = [
     demos.ls_gray,
     demos.ls_pulse,
     demos.ls_band,
+    demos.ls_bar,
     demos.ls_random,
     demos.ls_rainbow
 ]

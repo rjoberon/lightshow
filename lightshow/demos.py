@@ -15,6 +15,8 @@
 # Author: rja
 #
 # Changes:
+# 2024-01-13 (rja)
+# - added col_next and changed col_rand
 # 2024-01-05 (rja)
 # - added ls_bar and ls_strip
 # 2024-01-04 (rja)
@@ -46,18 +48,24 @@ mv = 128
 
 colors = [
     (hv,  0,   0),   # red
+    (hv, mv,   0),   # orange
+    (hv, hv,   0),   # yellow
     (0,  hv,   0),   # green
+    (0,  hv,  hv),   # cyan
     (0,   0,  hv),   # blue
-    (mv, mv,   0),   # yellow
-    (mv,  0,  mv),   # magenta
-    (0,  mv,  mv),   # cyan
-    (hv, mv,   0)    # orange?
+    (mv,  0,  hv)   # purple
 ]
 OFF = (0, 0, 0)
 
 
+curr_color = colors[randint(0, len(colors)-1)]
+
 def col_rand():
-    return colors[randint(0, len(colors)-1)]
+    return curr_color
+
+def col_next():
+    global curr_color
+    curr_color = colors[randint(0, len(colors)-1)]
 
 
 def col_const():
@@ -189,7 +197,7 @@ def ls_binary(k, n, pixels, getcolor):
        ...
        n: [OOOOOOOO]
     """
-    for i, j in enumerate("{0:{fill}8b}".format(k % 2**n, fill='0')):
+    for i, j in enumerate(reversed("{0:{fill}8b}".format(k % 2**n, fill='0'))):
         pixels[i] = getcolor() if j == '1' else OFF
 
 
@@ -203,7 +211,7 @@ def ls_gray(k, n, pixels, getcolor):
        n: [OOOOOOOO]
     """
     kk = k % 2**n
-    for i, j in enumerate("{0:{fill}8b}".format(kk ^ (kk >> 1), fill='0')):
+    for i, j in enumerate(reversed("{0:{fill}8b}".format(kk ^ (kk >> 1), fill='0'))):
         pixels[i] = getcolor() if j == '1' else OFF
 
 

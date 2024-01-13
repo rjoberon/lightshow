@@ -57,7 +57,6 @@ import digitalio
 import demos
 from adafruit_debouncer import Debouncer
 
-
 # Update this to match the number of NeoPixel LEDs connected to your board.
 num_pixels = 8
 gpio_neopixel = board.GP0
@@ -109,54 +108,46 @@ with neopixel.NeoPixel(gpio_neopixel, num_pixels, auto_write=False) as pixels:
     k = 0                           # running variable for effect
     pos1_last = encoder1.position   # last position of rotary encoder 1
     pos2_last = encoder2.position   # last position of rotary encoder 2
-
     mode1 = 0                       # 0 = speed, 1 = step
-    cyclelen = 0.01                 # seconds
-    waitcycles = 10                 # wait cycles
-    currcycles = waitcycles
-    effect = effects[0]
-
+    cyclelen = 0.01                 # length of one cycle in seconds
+    waitcycles = 10                 # number of cycles per step
+    currcycles = waitcycles         # remaining cycles until next step
+    effect = effects[0]             # current effect
 
     while True:
         # handle rotary encoder1 (speed or stepping)
         pos1 = encoder1.position
         if pos1 != pos1_last:
-            delta = pos1 - pos1_last
+            delta = pos1 - pos1_last                    # get direction
             if mode1 == 0:
-                waitcycles = max(waitcycles + delta, 1)       # change speed
-                print("waitcycles:", waitcycles)
+                waitcycles = max(waitcycles + delta, 1) # change speed
             else:
-                k += delta                        # step through effect
-                print("k:", k)
-            print("encoder 1:", pos1, delta, waitcycles, k)
+                k += delta                              # step through effect
         pos1_last = pos1
 
         # handle switch2
         switch2.update()
-        # handle switch of rotary encoder
         if switch2.rose:
-            mode1 = (mode1 + 1) % 2
-            print("mode is now", mode1)
+            mode1 = (mode1 + 1) % 2                     # switch mode
 
         # handle rotary encoder2 (effect)
         pos2 = encoder2.position
         if pos2 != pos2_last:
-            effect = effects[pos2 % len(effects)] # change effect
-            k = 0                                 # start effect at 0
-            print("effect:", effect)
+            demos.col_next()                            # change color
+            effect = effects[pos2 % len(effects)]       # change effect
+            k = 0                                       # start effect at 0
         pos2_last = pos2
 
-
         # show effect
-        effect(k, num_pixels, pixels, demos.col_const)
+        effect(k, num_pixels, pixels, demos.col_rand)
         pixels.show()
 
-        if mode1 == 0 and currcycles <= 0:        # step automatically
+        if mode1 == 0 and currcycles <= 0:              # step automatically
             k += 1
-            currcycles = waitcycles
-        if k > 255:                               # reset
+            currcycles = waitcycles                     # reset cycle counter
+        if k > 255:                                     # reset k
             k = 0
 
-        currcycles -= 1
+        currcycles -= 1                                 # count cycles until next step
 
-        time.sleep(cyclelen)                      # wait
+        time.sleep(cyclelen)                            # wait for next cycle

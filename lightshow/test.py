@@ -51,10 +51,8 @@
 #   https://pypi.org/project/micropython-rotary-encoder/
 import time
 import board
-import neopixel
 import rotaryio
 import digitalio
-import demos
 from adafruit_debouncer import Debouncer
 
 
@@ -66,7 +64,7 @@ gpio_neopixel = board.GP0
 
 # rotary encoder with switch and RGB LED
 # rotary encoder
-encoder1 = rotaryio.IncrementalEncoder(board.GP4, board.GP3)
+encoder1 = rotaryio.IncrementalEncoder(board.GP3, board.GP4)
 # switch
 pin1 = digitalio.DigitalInOut(board.GP2)
 pin1.direction = digitalio.Direction.INPUT
@@ -88,75 +86,33 @@ pin2.direction = digitalio.Direction.INPUT
 pin2.pull = digitalio.Pull.UP
 switch2 = Debouncer(pin2)
 
-# FIXME: move to demos.py
-effects = [
-    demos.ls_position,
-    demos.ls_unary,
-    demos.ls_binary,
-    demos.ls_gray,
-    demos.ls_pulse,
-    demos.ls_band,
-    demos.ls_bar,
-    demos.ls_strip,
-    demos.ls_random,
-    demos.ls_rainbow
-]
 
+last_pos1 = None                # last position of rotary encoder 1
+last_pos2 = None                # last position of rotary encoder 2
 
-with neopixel.NeoPixel(gpio_neopixel, num_pixels, auto_write=False) as pixels:
-    pixels.brightness = 0.25
+while True:
+    # handle rotary encoder1 (speed or stepping)
+    pos1 = encoder1.position
+    if last_pos1 is None or pos1 != last_pos1:
+        print("encoder 1:", last_pos1, "→", pos1)
+    last_pos1 = pos1
 
-    k = 0                           # running variable for effect
-    pos1_last = encoder1.position   # last position of rotary encoder 1
-    pos2_last = encoder2.position   # last position of rotary encoder 2
+    # handle switch1
+    switch1.update()
+    # handle switch of rotary encoder
+    if switch1.rose:
+        print("switch 1")
 
-    mode1 = 0                       # 0 = speed, 1 = step
-    cyclelen = 0.01                 # seconds
-    waitcycles = 10                 # wait cycles
-    currcycles = waitcycles
-    effect = effects[0]
+    # handle switch2
+    switch2.update()
+    # handle switch of rotary encoder
+    if switch2.rose:
+        print("switch 2")
 
+    # handle rotary encoder2 (effect)
+    pos2 = encoder2.position
+    if last_pos2 is None or pos2 != last_pos2:
+        print("encoder 2:", last_pos2, "→", pos2)
+    last_pos2 = pos2
 
-    while True:
-        # handle rotary encoder1 (speed or stepping)
-        pos1 = encoder1.position
-        if pos1 != pos1_last:
-            delta = pos1 - pos1_last
-            if mode1 == 0:
-                waitcycles = max(waitcycles + delta, 1)       # change speed
-                print("waitcycles:", waitcycles)
-            else:
-                k += delta                        # step through effect
-                print("k:", k)
-            print("encoder 1:", pos1, delta, waitcycles, k)
-        pos1_last = pos1
-
-        # handle switch2
-        switch2.update()
-        # handle switch of rotary encoder
-        if switch2.rose:
-            mode1 = (mode1 + 1) % 2
-            print("mode is now", mode1)
-
-        # handle rotary encoder2 (effect)
-        pos2 = encoder2.position
-        if pos2 != pos2_last:
-            effect = effects[pos2 % len(effects)] # change effect
-            k = 0                                 # start effect at 0
-            print("effect:", effect)
-        pos2_last = pos2
-
-
-        # show effect
-        effect(k, num_pixels, pixels, demos.col_const)
-        pixels.show()
-
-        if mode1 == 0 and currcycles <= 0:        # step automatically
-            k += 1
-            currcycles = waitcycles
-        if k > 255:                               # reset
-            k = 0
-
-        currcycles -= 1
-
-        time.sleep(cyclelen)                      # wait
+    time.sleep(0.05)                          # wait

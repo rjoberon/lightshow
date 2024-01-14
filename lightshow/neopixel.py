@@ -11,26 +11,26 @@
 # Source: https://learn.adafruit.com/getting-started-with-raspberry-pi-pico-circuitpython/neopixel-leds
 #
 # Wiring:
-# | device  | pin    | function                  | Pico    |
-# |---------+--------+---------------------------+---------|
-# | LED     | black  | GND                       | GND     |
-# | strip   | red    | 5VDC                      | VBUS    |
-# |         | yellow | DIN                       | GP0     |
-# |---------+--------+---------------------------+---------|
-# | RGB     | A      | rotary encoder            | GP3     |
-# | rotary  | B      | rotary encoder            | GP4     |
-# | encoder | C      | rotary encoder GND        | GND     |
-# |         | 1      | LED red                   | -       |
-# |         | 2      | LED green                 | -       |
-# |         | 3      | switch                    | GP2     |
-# |         | 4      | LED blue                  | -       |
-# |         | 5      | common anode LED & switch | 3.3V_EN |
-# |---------+--------+---------------------------+---------|
-# | EC11    | A      | rotary encoder            | GP10    |
-# | rotary  | B      | rotary encoder            | GP11    |
-# | encoder | C      | GND                       | GND     |
-# |         | D      | GND                       | GND     |
-# |         | E      | switch                    | GP12    |
+# | device  | pin    | function                  | Pico  |
+# |---------+--------+---------------------------+-------|
+# | LED     | black  | GND                       | GND   |
+# | strip   | red    | 5VDC                      | VBUS  |
+# |         | yellow | DIN                       | GP0   |
+# |---------+--------+---------------------------+-------|
+# | RGB     | A      | rotary encoder            | GP3   |
+# | rotary  | B      | rotary encoder            | GP4   |
+# | encoder | C      | rotary encoder GND        | GND   |
+# |         | 1      | LED red                   | -     |
+# |         | 2      | LED green                 | -     |
+# |         | 3      | switch                    | GP2   |
+# |         | 4      | LED blue                  | -     |
+# |         | 5      | common anode LED & switch | 3.3V  |
+# |---------+--------+---------------------------+-------|
+# | EC11    | A      | rotary encoder            | GP10  |
+# | rotary  | B      | rotary encoder            | GP11  |
+# | encoder | C      | GND                       | GND   |
+# |         | D      | GND                       | GND   |
+# |         | E      | switch                    | GP12  |
 #
 # Author: rja
 #

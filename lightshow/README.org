@@ -88,6 +88,7 @@ switch and LEDs have a common anode!
 
 - Quelle 1: https://arduino-projekte.info/produkt/ec11-rotary-encoder/
 - Quelle 2: https://www.farnell.com/datasheets/1837001.pdf
+- Quelle 3: https://www.elektronik-kompendium.de/sites/raspberry-pi/2703131.htm
 
 | pin | item  |
 |-----+-------|

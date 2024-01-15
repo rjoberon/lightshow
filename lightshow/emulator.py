@@ -89,11 +89,16 @@ class NeoPixelEmulator():
         func(pos, len(self.data), self.data, getcolor)
         self.show()
 
+    def list_functions(self):
+        for fn in dir(demos):
+            if fn.startswith("ls_"):
+                print(" ", fn)
+
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Emulate a NeoPixel and a Rotary Encoder.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('function', type=str, help='function to test', nargs='*', default=["ls_binary"])
+    parser.add_argument('function', type=str, help='function to test', nargs='*')
     parser.add_argument('-c', '--color', choices=["col_const", "col_rand"], help='function for color', default="col_const")
     parser.add_argument('-s', '--size', type=int, metavar="NUM", help='number of LEDs', default=8)
     parser.add_argument('-d', '--delay', type=float, metavar="D", help='time delay', default=0.05)
@@ -104,4 +109,8 @@ if __name__ == '__main__':
 
     npe = NeoPixelEmulator(args.size)
 
-    sys.exit(npe.run(getattr(demos, args.function[0]), getattr(demos, args.color), args.step, args.delay))
+    if len(args.function) == 0:
+        print("Expected the name of an effect as argument. Please choose:")
+        npe.list_functions()
+    else:
+        sys.exit(npe.run(getattr(demos, args.function[0]), getattr(demos, args.color), args.step, args.delay))

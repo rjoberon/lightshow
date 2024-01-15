@@ -97,6 +97,7 @@ effects = [
     demos.ls_band,
     demos.ls_bar,
     demos.ls_strip,
+    demos.ls_sine,
     demos.ls_random,
     demos.ls_rainbow
 ]
